@@ -1,0 +1,25 @@
+title 0.6: New note
+
+note over browser:
+User fills out form and presses 'Save'
+end note
+
+note over browser:
+On submit, it creates a new node,
+push it to array and redraw DOM
+end note
+
+note over browser:
+Send a note to the server 
+with XHTTP and POST method
+end note
+
+browser->server: HTTP POST https://studies.cs.helsinki.fi/exampleapp/new_note_spa
+
+server-->browser: JSON: {content: "Test!", date: "2022-06-08T16:44:56.359Z"}
+
+note over browser: 
+The HTTP 201 Created success status response
+code indicates that the request has succeeded 
+and has led to the creation of a resource.
+end note

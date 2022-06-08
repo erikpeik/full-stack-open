@@ -1,0 +1,38 @@
+title 0.5: Single page app
+
+browser->server: HTTP GET https://studies.cs.helsinki.fi/exampleapp/spa
+server-->browser: HTML-site
+
+browser->server: HTTP GET https://studies.cs.helsinki.fi/exampleapp/main.css
+server-->browser: main.css
+
+browser->server: HTTP GET https://studies.cs.helsinki.fi/exampleapp/spa.js
+server-->browser: spa.js
+
+note over browser:
+On ready state the browser request JSON 
+from server and store them to array
+end note
+
+browser->server: HTTP GET https://studies.cs.helsinki.fi/exampleapp/data.json
+server-->browser: [{content: "Hello!", date: "2022-06-08T14:36:21.466Z"}, ...]
+
+note over browser:
+When notes is requested,
+(re)draw notes to DOM
+end note
+
+browser->server: HTTP GET https://studies.cs.helsinki.fi/favicon.ico
+
+note over server:
+typically favicon.ico is an icon associated 
+with a particular website, displayed in the
+address bar of a browser accessing the site.
+end note
+
+server-->browser: text/html
+
+note over browser:
+Unlikely what I assumed it returns
+HTML page with the link to Course stats
+end note

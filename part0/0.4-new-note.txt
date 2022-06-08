@@ -1,0 +1,56 @@
+Title 0.4: New note
+
+note over browser:
+The user fills the form and presses the submit
+end note
+
+browser->server: HTTP POST https://studies.cs.helsinki.fi/exampleapp/new_note
+note over server:
+Status code: 301
+
+The requested resource is moved to the 
+URL is given by the Location headers:
+/exampleapp/notes
+end note
+server-->browser: note: Hello World!
+
+note over browser:
+New note is received
+end note:
+
+browser->server: HTTP GET https://studies.cs.helsinki.fi/exampleapp/notes
+server-->browser: HTML-code
+
+browser->server: HTTP GET https://studies.cs.helsinki.fi/exampleapp/main.css
+server-->browser: main.css
+
+browser->server: HTTP GET https://studies.cs.helsinki.fi/exampleapp/main.js
+server-->browser: main.js
+
+note over browser:
+The browser starts executing js-code
+that requests JSON data from the server
+end note
+
+browser->server: HTTP GET https://studies.cs.helsinki.fi/exampleapp/data.json
+server->browser: [.., {content: 'Hello World!', date: '2022-06-08T15:16:10.653Z'}]
+
+note over browser:
+The browser executes the event handler
+that renders notes to display
+end note
+
+browser->server: HTTP GET https://studies.cs.helsinki.fi/favicon.ico
+
+note over server:
+typically favicon.ico is an icon associated 
+with a particular website, displayed in the
+address bar of a browser accessing the site.
+end note
+
+server-->browser: text/html
+
+note over browser:
+Unlikely what I assumed it returns
+HTML page with the link to Course stats
+end note
