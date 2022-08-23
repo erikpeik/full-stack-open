@@ -14,4 +14,5 @@ The course that I'm doing is https://fullstackopen.com/en/, provided by [Helsink
 Part | Title | Status
 :---:|:-----:|:------:
 0 | [Fundamentals of Web apps](https://github.com/erikpeik/full-stack-open/tree/master/part0) | ✅
-1 | [Introduction to React](https://github.com/erikpeik/full-stack-open/tree/master/part1/) | ⏳
+1 | [Introduction to React](https://github.com/erikpeik/full-stack-open/tree/master/part1/) | ✅
+2 | [Communicating with server](https://github.com/erikpeik/full-stack-open/tree/master/part2/) | ⏳
