@@ -4,26 +4,76 @@ import axios from 'axios'
 const Languages = ({languages}) => {
 	if (languages !== undefined) {
 		const language_array = Object.values(languages)
-		return (language_array.map((language, i) => <li key={i}>{language}</li>))
+		return (
+			<div>
+				<h2>languages</h2>
+				<ul>
+				{language_array.map((language, i) => <li key={i}>{language}</li>)}
+				</ul>
+			</div>
+			)
 	}
 }
 
-const Country = ({country}) => {
+const Weather = ({capital, latlng}) => {
+	const api_key = process.env.REACT_APP_API_KEY
+	const [weather, setWeather] = useState([])
+	const [isLoading, setIsLoading] = useState(true)
+
+	useEffect(() => {
+		const params = {
+			lat: latlng[0],
+			lon: latlng[1],
+			appid: api_key,
+		}
+
+		axios
+			.get("http://api.openweathermap.org/data/2.5/weather", { params })
+			.then(response => {
+				setWeather(response.data)
+				setIsLoading(false)
+			})
+			.catch(error => {
+				console.log(error)
+			})
+	}, [api_key, latlng])
+
+	if (isLoading) {
+		return <div>Loading...</div>
+	}
+
+	return (
+		<div>
+			<h3>Weather in {capital}</h3>
+			<div>temperature: {(weather.main.temp - 273.15).toFixed(2) + " Celsius"}</div>
+			<img src={`http://openweathermap.org/img/wn/${weather.weather[0].icon}@4x.png`} alt="weather icon" />
+			<div>wind {weather.wind.speed} m/s</div>
+		</div>
+	)
+}
+
+const BasicData = ({country}) => {
 	return (
 		<div>
 			<h1>{country.name}</h1>
 			<div>capital {country.capital}</div>
 			<div>area {country.area}</div>
-			<h2>languages</h2>
-			<ul>
-				<Languages languages={country.languages} />
-			</ul>
-			<img src={country.flag} alt="flag" height="150" />
 		</div>
 	)
 }
 
-const CountryList = ({countries, filter}) => {
+const Country = ({country}) => {
+	return (
+		<div>
+			<BasicData country={country} />
+			<Languages languages={country.languages} />
+			<img src={country.flag} alt="flag" height="150" />
+			<Weather capital={country.capital} latlng={country.latlng} />
+		</div>
+	)
+}
+
+const CountryList = ({countries, filter, setFilter}) => {
 	const countriesFilter = countries.filter(country =>
 		country.name.toLowerCase().includes(filter.toLowerCase())
 	)
@@ -35,11 +85,16 @@ const CountryList = ({countries, filter}) => {
 	}
 	return (
 		<div>
-		{countriesFilter.map((country, i) => <div key={i}>{country.name}</div>)}
+			{countriesFilter.map((country, i) =>
+				<div key={i}>
+					{country.name} <button
+					style={{margin: '0px'}}
+					onClick={() => setFilter(country.name)}>show</button>
+				</div>
+				)}
 		</div>
 	)
 }
-
 
 const App = () => {
 	const [countries, setCountries] = useState([])
@@ -56,6 +111,7 @@ const App = () => {
 						area: country.area,
 						flag: country.flags.png,
 						languages: country.languages,
+						latlng: country.capitalInfo.latlng
 					}
 				})
 				setCountries(names)
@@ -66,7 +122,7 @@ const App = () => {
 		<div>
 			<div>find counties <input value={filter} onChange={(e) => setFilter(e.target.value)}/>
 			</div>
-			<CountryList countries={countries} filter={filter} />
+			<CountryList countries={countries} filter={filter} setFilter={setFilter} />
 		</div>
 	)
 }
