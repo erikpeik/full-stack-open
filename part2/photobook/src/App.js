@@ -60,7 +60,16 @@ const App = () => {
 		}
 		const names = persons.map(person => person.name)
 		if (names.includes(newName)) {
-			alert(`${newName} is already added to phonebook`)
+			const text = `${newName} is already added to phonebook, replace the old number with a new one?`
+			if (window.confirm(text)) {
+				const person = persons.find(p => p.name === newName)
+				const changedPerson = { ...person, number: newNumber }
+				personService
+					.update(person.id, changedPerson)
+					.then(response => {
+						setPersons(persons.map(p => p.id !== person.id ? p : response.data))
+					})
+			}
 		} else {
 			personService
 				.create(personObject)
