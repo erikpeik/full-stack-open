@@ -56,9 +56,15 @@ const Footer = () => (
 )
 
 const CreateNew = (props) => {
-	const content = useField('text')
-	const author = useField('text')
-	const info = useField('text')
+	const { reset: resetContent, ...content } = useField('text')
+	const { reset: resetAuthor, ...author } = useField('text')
+	const { reset: resetInfo, ...info } = useField('text')
+
+	const resetFields = () => {
+		resetContent()
+		resetAuthor()
+		resetInfo()
+	}
 
 	const navigate = useNavigate()
 
@@ -70,7 +76,7 @@ const CreateNew = (props) => {
 			"info": info.value,
 			"votes": 0
 		})
-		props.setNotification(`a new anecdote ${content} created!`)
+		props.setNotification(`a new anecdote ${content.value} created!`)
 		setTimeout(() => {
 			props.setNotification('')
 		}, 5000)
@@ -94,6 +100,7 @@ const CreateNew = (props) => {
 					<input {...info} />
 				</div>
 				<button>create</button>
+				<button type="button" onClick={resetFields}>reset</button>
 			</form>
 		</div>
 	)
@@ -142,27 +149,20 @@ const App = () => {
 	const anecdoteById = (id) =>
 		anecdotes.find(a => a.id === id)
 
-	// const vote = (id) => {
-	// 	const anecdote = anecdoteById(id)
-
-	// 	const voted = {
-	// 		...anecdote,
-	// 		votes: anecdote.votes + 1
-	// 	}
-
-	// 	setAnecdotes(anecdotes.map(a => a.id === id ? voted : a))
-	// }
+	const notificationStyle = {
+		margin: 0
+	}
 
 	return (
 		<Router>
 			<h1>Software anecdotes</h1>
 			<Menu />
-			<p>{notification}</p>
+			<p style={notificationStyle}>{notification}</p>
 			<Routes>
 				<Route path='/anecdotes/:id' element={<Anecdote anecdoteById={anecdoteById} />} />
 				<Route path='/' element={<AnecdoteList anecdotes={anecdotes} />} />
 				<Route path='/about' element={<About />} />
-				<Route path='/create' element={<CreateNew addNew={addNew} setNotification={setNotification}/>} />
+				<Route path='/create' element={<CreateNew addNew={addNew} setNotification={setNotification} />} />
 			</Routes>
 			<Footer />
 		</Router>
