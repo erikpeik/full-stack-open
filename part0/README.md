@@ -13,3 +13,5 @@ The diagrams were made by using [websequencediagrams](https://www.websequencedia
 0.4: New note | 0.5: Single page app | 0.6 New note
 :------------:|:--------------------:|:--------------:
 ![](https://github.com/erikpeik/full-stack-open/blob/master/part0/0.4-new-note.png) | ![](https://github.com/erikpeik/full-stack-open/blob/master/part0/0.5-single-page-app.png) | ![](https://github.com/erikpeik/full-stack-open/blob/master/part0/0.6-new-note.png)
+
+[Back to home 🏠](https://github.com/erikpeik/full-stack-open) || [Next part ➡️](https://github.com/erikpeik/full-stack-open/tree/master/part1)
