@@ -1,0 +1,3 @@
+[submodule "part3"]
+	path = part3
+	url = git@github.com:erikpeik/fullstackopen-part3.git
