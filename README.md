@@ -16,4 +16,5 @@ Part | Title | Status
 0 | [Fundamentals of Web apps](https://github.com/erikpeik/full-stack-open/tree/master/part0) | ✅
 1 | [Introduction to React](https://github.com/erikpeik/full-stack-open/tree/master/part1/) | ✅
 2 | [Communicating with server](https://github.com/erikpeik/full-stack-open/tree/master/part2/) | ✅
-3 | [Programming a server with NodeJS and Express](https://github.com/erikpeik/fullstackopen-part3) | ⏳
+3 | [Programming a server with NodeJS and Express](https://github.com/erikpeik/fullstackopen-part3) | ✅
+4 | [Testing Express servers, user administration](https://github.com/erikpeik/full-stack-open/tree/master/part4) | ⏳
