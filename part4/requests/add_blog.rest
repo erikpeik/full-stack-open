@@ -1,0 +1,11 @@
+POST /api/blogs HTTP/1.1
+Host: localhost:3003
+Content-Type: application/json
+
+{
+  "title": "My first blog",
+  "author": "John Doe",
+  "url": "http://www.example.com",
+  "likes": 0
+}
+
