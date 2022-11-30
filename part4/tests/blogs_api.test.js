@@ -102,3 +102,40 @@ test('If title or url are missing, backend responds with 400 Bad Request', async
   const response = await api.get('/api/blogs')
   expect(response.body).toHaveLength(helper.initialBlogs.length)
 }, 10000)
+
+test('Deleting a blog post', async () => {
+  const notesAtStart = await helper.blogsInDb()
+  const blogToDelete = notesAtStart[0]
+
+  await api.delete(`/api/blogs/${blogToDelete.id}`).expect(204)
+
+  const notesAtEnd = await helper.blogsInDb()
+
+  expect(notesAtEnd).toHaveLength(helper.initialBlogs.length - 1)
+
+  const contents = notesAtEnd.map((r) => r.title)
+
+  expect(contents).not.toContain(blogToDelete.title)
+})
+
+test('Updating a blog post', async () => {
+  const notesAtStart = await helper.blogsInDb()
+  const blogToUpdate = notesAtStart[0]
+
+  const updatedBlog = {
+    title: 'Have no clue how to this project!',
+    author: 'Erik Mende',
+    url: 'https:/erikpeik.fi',
+    likes: 42,
+  }
+
+  await api.put(`/api/blogs/${blogToUpdate.id}`).send(updatedBlog).expect(200)
+
+  const notesAtEnd = await helper.blogsInDb()
+
+  expect(notesAtEnd).toHaveLength(helper.initialBlogs.length)
+  expect(notesAtEnd[0].title).toBe('Have no clue how to this project!')
+  expect(notesAtEnd[0].author).toBe('Erik Mende')
+  expect(notesAtEnd[0].url).toBe('https:/erikpeik.fi')
+  expect(notesAtEnd[0].likes).toBe(42)
+})
