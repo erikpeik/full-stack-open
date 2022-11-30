@@ -33,7 +33,7 @@ test('Verifying the unique identifier property of the blog posts is named id', a
 
 test('Making an HTTP POST request to /api/blogs successfully creates a new blog post', async () => {
   const newBlog = {
-    title: "How to solve the Rubik's Cube?",
+    title: 'How to solve the Rubik\'s Cube?',
     author: 'Denes Ferenc',
     url: 'https://ruwix.com/the-rubiks-cube/how-to-solve-the-rubiks-cube-beginners-method/',
     likes: 42,
@@ -49,12 +49,12 @@ test('Making an HTTP POST request to /api/blogs successfully creates a new blog 
   const contents = response.body.map((r) => r.title)
 
   expect(response.body).toHaveLength(helper.initialBlogs.length + 1)
-  expect(contents).toContain("How to solve the Rubik's Cube?")
+  expect(contents).toContain('How to solve the Rubik\'s Cube?')
 })
 
 test('If the likes property is missing from the request, it will default to the value 0', async () => {
   const newBlog = {
-    title: "How to solve the Rubik's Cube?",
+    title: 'How to solve the Rubik\'s Cube?',
     author: 'Denes Ferenc',
     url: 'https://ruwix.com/the-rubiks-cube/how-to-solve-the-rubiks-cube-beginners-method/',
   }
@@ -68,10 +68,10 @@ test('If the likes property is missing from the request, it will default to the 
   const response = await api.get('/api/blogs')
 
   const contents = response.body.map((r) => r.title)
-  expect(contents).toContain("How to solve the Rubik's Cube?")
+  expect(contents).toContain('How to solve the Rubik\'s Cube?')
 
   response.body.forEach((blog) => {
-    if (blog.title === "How to solve the Rubik's Cube?") {
+    if (blog.title === 'How to solve the Rubik\'s Cube?') {
       expect(blog.likes).toBe(0)
     }
   })
@@ -79,12 +79,26 @@ test('If the likes property is missing from the request, it will default to the 
 
 test('If title or url are missing, backend responds with 400 Bad Request', async () => {
   const missingUrl = {
-    title: "How to solve the Rubik's Cube?",
+    title: 'How to solve the Rubik\'s Cube?',
     author: 'Denes Ferenc',
+    likes: 42,
   }
 
-  await api
-    .post('/api/blogs')
-    .send(missingUrl)
-    .expect(400)
+  const missingTitle = {
+    author: 'Denes Ferenc',
+    url: 'https://ruwix.com/the-rubiks-cube/how-to-solve-the-rubiks-cube-beginners-method/',
+    likes: 42,
+  }
+
+  const missingBoth = {
+    author: 'Denes Ferenc',
+    likes: 42,
+  }
+
+  await api.post('/api/blogs').send(missingUrl).expect(400)
+  await api.post('/api/blogs').send(missingTitle).expect(400)
+  await api.post('/api/blogs').send(missingBoth).expect(400)
+
+  const response = await api.get('/api/blogs')
+  expect(response.body).toHaveLength(helper.initialBlogs.length)
 }, 10000)
