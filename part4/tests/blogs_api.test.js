@@ -36,7 +36,7 @@ test('Making an HTTP POST request to /api/blogs successfully creates a new blog 
     title: 'How to solve the Rubik\'s Cube?',
     author: 'Denes Ferenc',
     url: 'https://ruwix.com/the-rubiks-cube/how-to-solve-the-rubiks-cube-beginners-method/',
-    likes: 0,
+    likes: 42,
   }
 
   await api
@@ -52,16 +52,27 @@ test('Making an HTTP POST request to /api/blogs successfully creates a new blog 
   expect(contents).toContain('How to solve the Rubik\'s Cube?')
 })
 
-// test('a specific note is within the returned notes', async () => {
-//   const response = await api.get('/api/blogs')
+test('If the likes property is missing from the request, it will default to the value 0', async () => {
+  const newBlog = {
+    title: 'How to solve the Rubik\'s Cube?',
+    author: 'Denes Ferenc',
+    url: 'https://ruwix.com/the-rubiks-cube/how-to-solve-the-rubiks-cube-beginners-method/',
+  }
 
-//   const contents = response.body.map((r) => r.title)
-//   expect(contents).toContain('Canonical string reduction')
-// })
+  await api
+    .post('/api/blogs')
+    .send(newBlog)
+    .expect(201)
+    .expect('Content-Type', /application\/json/)
 
-// test('empty note is not added', async () => {
-//   await api.post('/api/blogs').send({}).expect(400)
+  const response = await api.get('/api/blogs')
 
-//   const response = await api.get('/api/blogs')
-//   expect(response.body).toHaveLength(helper.initialBlogs.length)
-// })
+  const contents = response.body.map((r) => r.title)
+  expect(contents).toContain('How to solve the Rubik\'s Cube?')
+
+  response.body.forEach((blog) => {
+    if (blog.title === 'How to solve the Rubik\'s Cube?') {
+      expect(blog.likes).toBe(0)
+    }
+  })
+})
